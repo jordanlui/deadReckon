@@ -1,5 +1,9 @@
 /* 
- *  IMU
+ *  Script reads from MPU9250 and sends over Serial as a JSON string
+ *  This can be read in Python and saved to CSV
+ *  Future work should send just the numbers in byte format for speed increase, but this isn't important now
+ *  
+ *  Current loop timing: 10Hz
  */
 
 #include "quaternionFilters.h"
