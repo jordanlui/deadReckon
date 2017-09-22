@@ -10,16 +10,19 @@ import sys
 import time
 import csv
 import json
+from saveCSV import WriteToCSV # Custom script for saving CSV
 
 # Useful variables
 arduinotiming = 0.2 # Clock on arduino sketch, in seconds
 
 # Make serial connection
-serial = serial.Serial("COM3", 9600, timeout=0)
+serial = serial.Serial("COM3", 38400, timeout=0)
+if serial:
+	print('connected')
 
 # Run the loop until it crashes
 while True:
-# for i in range(0,10):
+# for i in range(0,10):connected
 	data = serial.readline().strip('\n\r')
 	# if data:
 		# print('Reading')
@@ -34,14 +37,20 @@ while True:
 	 	# print('start',data[0])
 	 	# print('end',data[-1])
 	 	if data[0]=='{' and data[-1] == '}':
-	 		print('Complete string')
+	 		print('Complete string Detected')
 	 		# print(data)
 
 	 		j = json.loads(data)
-	 		print(j)
-	 		print ('accelerometer',j['acc'])
-	 		print ('gyro', j['gyro'])
-	 		print ('mag', j['mag'])
+	 		# print(j)
+	 		# print ('accelerometer',j['acc'])
+	 		# print ('gyro', j['gyro'])
+	 		# print ('mag', j['mag'])
+
+	 		# print ('now we write to CSV')
+ 			
+ 			csv_success = WriteToCSV(j)
+ 			print csv_success
+ 			print ('\n')
 	 		# time.sleep(.5)
 	 	# print ('String begin and ends with',data[0],data[-1])
 	 	# print ('length of data is',len(data))
