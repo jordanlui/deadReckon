@@ -4,6 +4,7 @@
  *  Future work should send just the numbers in byte format for speed increase, but this isn't important now
  *  
  *  Current loop timing: 10Hz
+ *  Units: 
  */
 
 #include "quaternionFilters.h"
@@ -46,7 +47,7 @@ void setup()
   
   Wire.begin();
   // TWBR = 12;  // 400 kbit/sec I2C speed
-  Serial.begin(38400);
+  Serial.begin(115200);
 
   // Set up the interrupt pin, its set as active high, push-pull
   pinMode(intPin, INPUT);
@@ -329,7 +330,7 @@ void loop()
     myIMU.delt_t = millis() - myIMU.count;
 
     // update by comparing time delta to a ms count
-    if (myIMU.delt_t > 100)
+    if (myIMU.delt_t > 10)
     {
       if(SerialDebug)
       {

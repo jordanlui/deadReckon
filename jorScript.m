@@ -2,9 +2,13 @@
 % learning to use matlab again
 
 %% Housekeeping
- 
+
 addpath('ximu_matlab_library');	% include x-IMU MATLAB library
 addpath('quaternion_library');	% include quatenrion library
+addpath('MahonyAHRS');
+% addpath('../Libraries/Oscillatory-Motion-Tracking-With-x-IMU-master/ximu_matlab_library');	% include x-IMU MATLAB library
+% addpath('../Libraries/Oscillatory-Motion-Tracking-With-x-IMU-master/@quaternion_library');
+% addpath('../Libraries/Oscillatory-Motion-Tracking-With-x-IMU-master/@MahonyAHRS');
 close all;                     	% close all figures
 clear;                         	% clear all variables
 clc;                          	% clear the command terminal
@@ -12,12 +16,12 @@ clc;                          	% clear the command terminal
 %% Import data
 
 % Import my own array
-dataTemp = csvread('/data/move_cardinal/17_09_22_log.csv')
-acc = dataTemp[:,1:3]
-gyr = dataTemp[:,4:6]
+dataTemp = csvread('U:/IMU_DR/movement_square.csv',1,0);
+% dataTemp = csvread('U:/IMU_DR/stationary3.csv',1,0);
+acc = dataTemp(:,2:4);
+gyr = dataTemp(:,5:7);
 % Note some unit conversions are required
-gyr = deg2rad(gyr) % Convert deg/s to rad/s values
-
+samplePeriod = 1/80; % Sampled at 10hz rate
 
 %{
 xIMUdata = xIMUdataClass('LoggedData/LoggedData');
@@ -31,7 +35,7 @@ acc = [xIMUdata.CalInertialAndMagneticData.Accelerometer.X...
        xIMUdata.CalInertialAndMagneticData.Accelerometer.Y...
        xIMUdata.CalInertialAndMagneticData.Accelerometer.Z];	% accelerometer
 
-}%
+%}
 
 %% Plot stuff
 % Plot

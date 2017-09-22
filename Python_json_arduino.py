@@ -16,7 +16,7 @@ from saveCSV import WriteToCSV # Custom script for saving CSV
 arduinotiming = 0.2 # Clock on arduino sketch, in seconds
 
 # Make serial connection
-serial = serial.Serial("COM3", 38400, timeout=0)
+serial = serial.Serial("COM3", 115200, timeout=0)
 if serial:
 	print('connected')
 
@@ -64,7 +64,7 @@ while True:
 	 	# print j['sensor']
 	 	# print j['data']
  	
-	time.sleep(0.05) # Wait some time before reading again
+	time.sleep(0.005) # Wait some time before reading again
 
 # json test
 # data = '{"sensor":"gps","time":1351824120,"data":[48.756080,2.302038]}'
