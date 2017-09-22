@@ -11,6 +11,13 @@ clc;                          	% clear the command terminal
  
 %% Import data
 
+% Import my own array
+dataTemp = csvread('/data/move_cardinal/17_09_22_log.csv')
+acc = dataTemp[:,1:3]
+gyr = dataTemp[:,4:6]
+% Note some unit conversions are required
+gyr = deg2rad(gyr) % Convert deg/s to rad/s values
+
 
 %{
 xIMUdata = xIMUdataClass('LoggedData/LoggedData');
