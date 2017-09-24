@@ -20,6 +20,8 @@ serial = serial.Serial("COM3", 115200, timeout=0)
 if serial:
 	print('connected')
 
+buffer = []
+
 # Run the loop until it crashes
 while True:
 # for i in range(0,10):connected
@@ -38,18 +40,14 @@ while True:
 	 	# print('end',data[-1])
 	 	if data[0]=='{' and data[-1] == '}':
 	 		print('Complete string Detected')
-	 		# print(data)
-
+			print(data)
+			
 	 		j = json.loads(data)
-	 		# print(j)
-	 		# print ('accelerometer',j['acc'])
-	 		# print ('gyro', j['gyro'])
-	 		# print ('mag', j['mag'])
+			buffer.append(j)
 
-	 		# print ('now we write to CSV')
- 			
- 			csv_success = WriteToCSV(j)
- 			print csv_success
+				
+# 			csv_success = WriteToCSV(j)
+# 			print csv_success
  			print ('\n')
 	 		# time.sleep(.5)
 	 	# print ('String begin and ends with',data[0],data[-1])
