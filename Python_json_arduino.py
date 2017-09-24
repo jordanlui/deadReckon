@@ -64,7 +64,7 @@ while True:
 	 	# print j['sensor']
 	 	# print j['data']
  	
-	time.sleep(0.005) # Wait some time before reading again
+	time.sleep(0.010) # Wait some time before reading again
 
 # json test
 # data = '{"sensor":"gps","time":1351824120,"data":[48.756080,2.302038]}'

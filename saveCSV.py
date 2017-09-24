@@ -12,10 +12,13 @@ def WriteToCSV(datalist):
 
 	global csv_success
 	# Define header
-	header = ['time', 'accx', 'accy', 'accz', 'gx', 'gy', 'gz', 'mx', 'my', 'mz']
+	header = ['time', 'packet', 'accx', 'accy', 'accz', 'gx', 'gy', 'gz', 'mx', 'my', 'mz']
 
-	# Define our file
-	filename = str(time.strftime("%y_%m_%d_") + "log.csv")
+	# Define our filename
+	ts = time.time()
+	timestamp = time.strftime("%Y%m%d_")
+
+	filename = str(timestamp+ "log.csv")
 
 	# Handling to open our file if it exists or create new one
 	if exists(filename):
@@ -31,8 +34,8 @@ def WriteToCSV(datalist):
 
 
 	
-	f.writerow([ datalist['time'],datalist['acc'][0],datalist['acc'][1],datalist['acc'][2],datalist['gyro'][0],datalist['gyro'][1],datalist['gyro'][2],datalist['mag'][0],datalist['mag'][1],datalist['mag'][2] ])
-
+	f.writerow([ datalist['time'], datalist['packet'], datalist['acc'][0],datalist['acc'][1],datalist['acc'][2],datalist['gyro'][0],datalist['gyro'][1],datalist['gyro'][2],datalist['mag'][0],datalist['mag'][1],datalist['mag'][2] ])
+	
 	
 	csv_success = True
 	return csv_success
