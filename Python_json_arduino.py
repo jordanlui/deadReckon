@@ -5,22 +5,24 @@
 # We also try to write to csv now
 
 # Initialize
+from __future__ import division
 import serial
-import sys
+#import sys
 import time
-import csv
+#import csv
 import json
 from saveCSV import WriteToCSV # Custom script for saving CSV
 
 # Useful variables
-arduinotiming = 0.2 # Clock on arduino sketch, in seconds
+mcuFreq = 50 # Microcontroller frequency, in Hz
+mcuPeriod = 1 / mcuFreq # Python loop timing, in seconds
 
 # Make serial connection
 serial = serial.Serial("COM3", 115200, timeout=0)
 if serial:
 	print('connected')
 
-buffer = []
+databuffer = []
 
 # Run the loop until it crashes
 while True:
@@ -35,34 +37,32 @@ while True:
 		# Next we should determine if we receive a complete line of data.
 		# Method one: Verify that string starts and ends with {}
 		# Method two: verify a specific line length if we know what we're expecting
-	 	# print(data)
-	 	# print('start',data[0])
-	 	# print('end',data[-1])
-	 	if data[0]=='{' and data[-1] == '}':
-	 		print('Complete string Detected')
-			print(data)
-			
-	 		j = json.loads(data)
-			buffer.append(j)
+#		print(data)
 
+		if data[0]=='{' and data[-1] == '}':
+	 		print('Complete string')
+#			print(data)
+			
+			try:
+ 				j = json.loads(data) # Putting this within a try loop is an easy way to reject the mashed data JSON strings that crash the loops
 				
-# 			csv_success = WriteToCSV(j)
-# 			print csv_success
+
+				if j:
+#					print(j)
+					# databuffer.append(j) # Add to a buffer
+					# print(len(databuffer))
+					csv_success = WriteToCSV(j) # Write to a CSV file
+					print (csv_success)
+			except:
+				# This happens if the json file is formatted properly.
+				# print(data)
+				print('bad values')
+				# break # Break is discouraged because it will crash the whole script
  			print ('\n')
 	 		# time.sleep(.5)
-	 	# print ('String begin and ends with',data[0],data[-1])
-	 	# print ('length of data is',len(data))
- 		# # if data[0] == '{' and data[-1] == '}': # Fact that this doesn't work tells me that something wrong with encoding
 	 	
-	 	# # print len(data)
-	 	# j = json.loads(data)
-	 	# print(data)
-	 	
-	 	# print(j)
-	 	# print j['sensor']
-	 	# print j['data']
  	
-	time.sleep(0.010) # Wait some time before reading again
+	time.sleep(mcuPeriod) # Wait some time before reading again
 
 # json test
 # data = '{"sensor":"gps","time":1351824120,"data":[48.756080,2.302038]}'

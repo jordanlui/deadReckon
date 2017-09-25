@@ -333,7 +333,7 @@ void loop()
     myIMU.delt_t = millis() - myIMU.count;
 
     // update by comparing time delta to a ms count
-    if (myIMU.delt_t > 10)
+    if (myIMU.delt_t > 20) // 10ms is 100Hz, 20ms is 50Hz, 100ms is 10Hz, etc.
     {
       if(SerialDebug)
       {
@@ -454,10 +454,10 @@ void loop()
       myIMU.sumCount = 0;
       myIMU.sum = 0;
 
-      // Try to construct our IMU Sequence here 
+      // Construct our IMU Sequence here 
       // JSON Setup
       time_t t = now(); // Current execution time, in seconds
-      int numdigits = 6;
+      const int numdigits = 6; // Doesn't seem to actual influence the output
 //      packetCount++;
       // JSON setup
       StaticJsonBuffer<300> jsonBuffer;

@@ -6,6 +6,8 @@
 % addpath('ximu_matlab_library');	% include x-IMU MATLAB library
 % addpath('quaternion_library');	% include quatenrion library
 % addpath('MahonyAHRS');
+function [] = deadReckon();
+
 addpath('../Libraries/ximu_matlab_library');	% include x-IMU MATLAB library
 addpath('../Libraries/quaternion_library');
 addpath('../Libraries/MahonyAHRS');
@@ -16,15 +18,16 @@ clc;                          	% clear the command terminal
 %% Import data
 
 % Import my own array
-dataTemp = csvread('data/walk_door_bedroom.csv',1,0);
+dataTemp = csvread('data/20170924/reach50cm_single.csv',1,0);
 % dataTemp = csvread('U:/IMU_DR/stationary3.csv',1,0);
 acc = dataTemp(:,2:4);
 gyr = dataTemp(:,5:7);
 % Note some unit conversions are required
-samplePeriod = 1/80; % Period is 1/frequency
+mcuFreq = 43; % MCU Recording frequency, in Hz
+samplePeriod = 1/mcuFreq; % Period is 1/frequency
 filtCutOff = 0.100;
-% cutoffFreq = (2*filtCutOff)/(1/samplePeriod);
-cutoffFreq = 9.8e-4;
+cutoffFreq = (2*filtCutOff)/(1/samplePeriod);
+% cutoffFreq = 9.8e-4;
 
 %{
 xIMUdata = xIMUdataClass('LoggedData/LoggedData');

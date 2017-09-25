@@ -4,6 +4,10 @@
 
 const int numdigits = 6;
 int packetCount = 0;
+int frequency = 100; // Frequency in Hz
+const int delayTime = (int)(1 / frequency * 1000); // Loop time in milliseconds. Cast to int to be safe.
+
+
 void setup() {
   Serial.begin(115200);
 
@@ -11,8 +15,6 @@ void setup() {
 }
 
 // Open JSON buffer
-
-
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -44,6 +46,6 @@ void loop() {
   
   Serial.println();
 //  root.prettyPrintTo(Serial); // could pretty print but we don't need this
-  delay(20);
+  delay(delayTime);
 
 }
