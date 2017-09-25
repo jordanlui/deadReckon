@@ -333,7 +333,7 @@ void loop()
     myIMU.delt_t = millis() - myIMU.count;
 
     // update by comparing time delta to a ms count
-    if (myIMU.delt_t > 20) // 10ms is 100Hz, 20ms is 50Hz, 100ms is 10Hz, etc.
+    if (myIMU.delt_t > 10) // 10ms is 100Hz, 20ms is 50Hz, 100ms is 10Hz, etc.
     {
       if(SerialDebug)
       {

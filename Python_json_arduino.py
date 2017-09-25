@@ -14,7 +14,7 @@ import json
 from saveCSV import WriteToCSV # Custom script for saving CSV
 
 # Useful variables
-mcuFreq = 50 # Microcontroller frequency, in Hz
+mcuFreq = 100 # Microcontroller frequency, in Hz
 mcuPeriod = 1 / mcuFreq # Python loop timing, in seconds
 
 # Make serial connection
