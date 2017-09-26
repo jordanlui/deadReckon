@@ -27,7 +27,7 @@ const int updateRatems = 500;
 Adafruit_PCD8544 display = Adafruit_PCD8544(9, 8, 7, 5, 6);
 #endif // LCD
 
-#define AHRS true         // Set to false for basic data read
+#define AHRS false         // Set to false for basic data read
 #define SerialDebug false  // Set to true to get Serial output for debugging
 
 // Pin definitions
@@ -261,8 +261,40 @@ void loop()
   if (!AHRS)
   {
     myIMU.delt_t = millis() - myIMU.count;
-    if (myIMU.delt_t > 500)
+    if (myIMU.delt_t > 10)  // 10ms is 100Hz, 20ms is 50Hz, 100ms is 10Hz, etc.
     {
+      
+      // Construct our IMU Sequence here 
+      // JSON Setup
+      time_t t = now(); // Current execution time, in seconds
+      const int numdigits = 6; // Doesn't seem to actual influence the output
+//      packetCount++;
+      // JSON setup
+      StaticJsonBuffer<300> jsonBuffer;
+      JsonObject& root = jsonBuffer.createObject();
+      root["config"] = "imonly";
+      root["time"] = t; // Static time for now
+//      root["packet"] = packetCount;
+      JsonArray& acc = root.createNestedArray("acc");
+      JsonArray& gyro = root.createNestedArray("gyro");
+      JsonArray& mag = root.createNestedArray("mag");
+      
+      // JSON Variable allocation
+      acc.add(myIMU.ax,numdigits);
+      acc.add(myIMU.ay,numdigits);
+      acc.add(myIMU.az,numdigits);
+    
+      gyro.add(myIMU.gx,numdigits);
+      gyro.add(myIMU.gy,numdigits);
+      gyro.add(myIMU.gz,numdigits);
+    
+      mag.add(myIMU.mx,numdigits);
+      mag.add(myIMU.my,numdigits);
+      mag.add(myIMU.mz,numdigits);
+    
+      root.printTo(Serial);
+      Serial.println();
+      
       if(SerialDebug)
       {
         // Print acceleration values in milligs!
@@ -454,36 +486,36 @@ void loop()
       myIMU.sumCount = 0;
       myIMU.sum = 0;
 
-      // Construct our IMU Sequence here 
-      // JSON Setup
-      time_t t = now(); // Current execution time, in seconds
-      const int numdigits = 6; // Doesn't seem to actual influence the output
-//      packetCount++;
-      // JSON setup
-      StaticJsonBuffer<300> jsonBuffer;
-      JsonObject& root = jsonBuffer.createObject();
-      root["config"] = "imonly";
-      root["time"] = t; // Static time for now
-//      root["packet"] = packetCount;
-      JsonArray& acc = root.createNestedArray("acc");
-      JsonArray& gyro = root.createNestedArray("gyro");
-      JsonArray& mag = root.createNestedArray("mag");
-      
-      // JSON Variable allocation
-      acc.add(myIMU.ax,numdigits);
-      acc.add(myIMU.ay,numdigits);
-      acc.add(myIMU.az,numdigits);
-    
-      gyro.add(myIMU.gx,numdigits);
-      gyro.add(myIMU.gy,numdigits);
-      gyro.add(myIMU.gz,numdigits);
-    
-      mag.add(myIMU.mx,numdigits);
-      mag.add(myIMU.my,numdigits);
-      mag.add(myIMU.mz,numdigits);
-    
-      root.printTo(Serial);
-      Serial.println();
+//      // Construct our IMU Sequence here 
+//      // JSON Setup
+//      time_t t = now(); // Current execution time, in seconds
+//      const int numdigits = 6; // Doesn't seem to actual influence the output
+////      packetCount++;
+//      // JSON setup
+//      StaticJsonBuffer<300> jsonBuffer;
+//      JsonObject& root = jsonBuffer.createObject();
+//      root["config"] = "imonly";
+//      root["time"] = t; // Static time for now
+////      root["packet"] = packetCount;
+//      JsonArray& acc = root.createNestedArray("acc");
+//      JsonArray& gyro = root.createNestedArray("gyro");
+//      JsonArray& mag = root.createNestedArray("mag");
+//      
+//      // JSON Variable allocation
+//      acc.add(myIMU.ax,numdigits);
+//      acc.add(myIMU.ay,numdigits);
+//      acc.add(myIMU.az,numdigits);
+//    
+//      gyro.add(myIMU.gx,numdigits);
+//      gyro.add(myIMU.gy,numdigits);
+//      gyro.add(myIMU.gz,numdigits);
+//    
+//      mag.add(myIMU.mx,numdigits);
+//      mag.add(myIMU.my,numdigits);
+//      mag.add(myIMU.mz,numdigits);
+//    
+//      root.printTo(Serial);
+//      Serial.println();
   
 
       
